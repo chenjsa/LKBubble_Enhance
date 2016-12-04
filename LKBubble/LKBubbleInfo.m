@@ -76,9 +76,8 @@
 - (void)calIconView:(UIImageView *)iconView andTitleView:(UILabel *)titleView {
 	CGSize bubbleContentSize = CGSizeMake(self.bubbleSize.width * (1 - self.proportionOfPadding.x * 2),
 										  self.bubbleSize.height * (1 - self.proportionOfPadding.y * 2));
-	CGFloat iconWidth = self.layoutStyle == BUBBLE_LAYOUT_STYLE_ICON_TOP_TITLE_BOTTOM || self.layoutStyle == BUBBLE_LAYOUT_STYLE_ICON_ONLY || self.layoutStyle == BUBBLE_LAYOUT_STYLE_ICON_BOTTOM_TITLE_TOP ?
-	bubbleContentSize.height * self.proportionOfIcon :
-	bubbleContentSize.height * self.proportionOfIcon;
+	CGFloat iconWidth =
+	self.layoutStyle == BUBBLE_LAYOUT_STYLE_TITLE_ONLY ? 0 : bubbleContentSize.height * self.proportionOfIcon;
 	
 	CGFloat baseX = self.bubbleSize.width * self.proportionOfPadding.x;
 	CGFloat baseY = self.bubbleSize.height * self.proportionOfPadding.y;
@@ -100,8 +99,8 @@
 		titleHeight = bubbleContentSize.height;
 	}
 	//初始化frame
-	CGRect iconFrame = CGRectMake(baseX, baseY+ (bubbleContentSize.height - iconWidth) / 2, iconWidth, iconWidth);
-	CGRect titleFrame = CGRectMake(baseX, baseY + (bubbleContentSize.height - titleHeight) / 2, titleWidth, titleHeight);
+	CGRect iconFrame = CGRectMake(baseX, baseY, iconWidth, iconWidth);
+	CGRect titleFrame = CGRectMake(baseX, baseY, titleWidth, titleHeight);
 	switch (self.layoutStyle) {
 		case BUBBLE_LAYOUT_STYLE_ICON_TOP_TITLE_BOTTOM: {
 			//图标+文本高度
@@ -130,8 +129,10 @@
 			CGFloat contentWidth = iconWidth + bubbleContentSize.width * self.proportionOfSpace + titleWidth;
 			//水平居中，图标X坐标
 			iconFrame.origin.x = baseX + (bubbleContentSize.width - contentWidth) / 2;
+			iconFrame.origin.y = baseY + (bubbleContentSize.height - iconWidth) / 2;
 			//由图标X坐标求出文本X坐标
 			titleFrame.origin.x = iconFrame.origin.x + iconWidth + bubbleContentSize.width * self.proportionOfSpace;
+			titleFrame.origin.y = baseY + (bubbleContentSize.height - titleHeight) / 2;
 		}
 			break;
 		case BUBBLE_LAYOUT_STYLE_ICON_RIGHT_TITLE_LEFT: {
@@ -139,15 +140,19 @@
 			CGFloat contentWidth = iconWidth + bubbleContentSize.width * self.proportionOfSpace + titleWidth;
 			//水平居中，文本X坐标
 			titleFrame.origin.x = baseX + (bubbleContentSize.width - contentWidth) / 2;
+			titleFrame.origin.y = baseY + (bubbleContentSize.width - titleHeight) / 2;
 			//由文本坐标求出图标坐标
 			iconFrame.origin.x = titleFrame.origin.x + titleFrame.size.width + bubbleContentSize.width * self.proportionOfSpace;
+			iconFrame.origin.y = baseY + (bubbleContentSize.height - iconWidth) / 2;
 		}
 			break;
 		case BUBBLE_LAYOUT_STYLE_ICON_ONLY:
 			titleFrame = CGRectMake(0, 0, 0, 0);
-			iconFrame.origin.x = (bubbleContentSize.width - iconWidth) / 2;
+			iconFrame.origin.x = baseX + (bubbleContentSize.width - iconWidth) / 2;
+			iconFrame.origin.y = baseY + (bubbleContentSize.height - iconWidth) / 2;
 			break;
 		case BUBBLE_LAYOUT_STYLE_TITLE_ONLY:
+			titleFrame.origin.x = (bubbleContentSize.width - titleWidth) / 2;
 			titleFrame.origin.y = (bubbleContentSize.height - titleHeight) / 2;
 			iconFrame = CGRectMake(0, 0, 0, 0);
 			break;
