@@ -152,8 +152,8 @@
 			iconFrame.origin.y = baseY + (bubbleContentSize.height - iconWidth) / 2;
 			break;
 		case BUBBLE_LAYOUT_STYLE_TITLE_ONLY:
-			titleFrame.origin.x = (bubbleContentSize.width - titleWidth) / 2;
-			titleFrame.origin.y = (bubbleContentSize.height - titleHeight) / 2;
+			titleFrame.origin.x = baseX + (bubbleContentSize.width - titleWidth) / 2;
+			titleFrame.origin.y = baseY + (bubbleContentSize.height - titleHeight) / 2;
 			iconFrame = CGRectMake(0, 0, 0, 0);
 			break;
 		default:
