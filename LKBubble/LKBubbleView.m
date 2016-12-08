@@ -52,7 +52,9 @@ static LKBubbleView *defaultBubbleView;
         self->_iconImageView = [[UIImageView alloc] init];
         self->_iconImageView.clipsToBounds = YES;
         self->_titleLabel = [[UILabel alloc] init];
-        self->_titleLabel.textAlignment = NSTextAlignmentCenter;
+        self->_titleLabel.textAlignment = NSTextAlignmentCenter;	    
+	self->_titleLabel.adjustsFontSizeToFitWidth = YES;
+        self->_titleLabel.minimumScaleFactor = 0.5;
         self->_titleLabel.lineBreakMode = NSLineBreakByCharWrapping;
         [self->_titleLabel setNumberOfLines: 0];
         // 初始化蒙版控件
